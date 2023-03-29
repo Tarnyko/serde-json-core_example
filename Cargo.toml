@@ -1,0 +1,23 @@
+[package]
+name = "serde-json-core"
+version = "0.1.0"
+authors = ["tarnyko <tarnyko@tarnyko.net>"]
+license = "MIT"
+edition = "2018"
+
+[dependencies]
+# disable default features to avoid calls to "__libc_csu*"/"__libs_start_main"
+libc = { version = "0.2", default-features = false, features = ["extra_traits"] }
+# (syn 2.x, dependency of serde_derive 1.0.157, is edition 2021)
+# serde with "default-features = false" is no_std
+serde = { version = ">=1.0, <1.0.157", default-features = false, features = ["derive"] }
+# serde_json_core is no_std
+serde-json-core = { version = "0.5.0", default-features = false, features = ["heapless"] }
+heapless = { version = "0.7", features = ["serde"] }
+
+# For the "eh_personality" error
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
